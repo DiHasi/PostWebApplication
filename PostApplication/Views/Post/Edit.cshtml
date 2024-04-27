@@ -1,0 +1,71 @@
+@model PostApplication.Contracts.PostDTO
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data" class="d-flex flex-column gap-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Название</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Описание</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FeaturedImageFile" class="control-label">Изображение</label>
+                <input asp-for="FeaturedImageFile" type="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label">Категория</label>
+                <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TagIds" class="control-label">Теги</label>
+                <select asp-for="TagIds" asp-items="ViewBag.Tags" multiple class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+            <div>
+                <a asp-action="Index" class="btn btn-secondary">Вернуться к списку постов</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    CKEDITOR.replace('Description');
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectElement = document.querySelector('#TagIds');
+        const choices = new Choices(selectElement, {
+            removeItemButton: true,
+            searchEnabled: true,
+        });
+    });
+</script>
+
+<style>
+    .choices {
+        margin: 0 !important;
+    }
+</style>
+
+
+

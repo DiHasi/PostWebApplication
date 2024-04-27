@@ -1,0 +1,65 @@
+@model PostApplication.Models.Post
+
+@{
+    ViewData["Title"] = "Подробнее";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Html.DisplayFor(model => model.Slug)</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-12">
+            Описание
+        </dt>
+        <dd class = "col-sm-12">
+            @Html.Raw(Model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            Автор
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+    </dl>
+</div>
+
+@if(Model.Comments.Count > 0)
+{
+    <h2>Коментарии</h2>
+
+    @foreach (var comment in Model.Comments)
+    {
+        <p>@comment.Author: @comment.Body</p>
+    }
+}
+@if(User.Identity is { IsAuthenticated: true }){
+<h3>Добавить комментарий</h3>
+<form asp-action="AddComment" asp-route-id="@Model.Id">
+    <div class="form-group">
+        <label for="comment" class="control-label">Комментарий</label>
+        <input id="comment" name="comment" class="form-control" />
+    </div>
+
+    <div class="form-group mt-2">
+        <input type="submit" value="Add Comment" class="btn btn-success" />
+    </div>
+    
+</form>
+}
+else
+{
+    <h3>
+        <a asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="@Context.Request.Path">Войдите</a>,
+        чтобы оставить комментарий
+    </h3>
+}
+<div>
+    <hr/>
+    @if (User.Identity?.Name == Model.Author)
+    {
+        <a asp-action="Edit" class="btn btn-secondary" asp-route-id="@Model.Id">Изменить</a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Вернуться к списку постов</a>
+</div>

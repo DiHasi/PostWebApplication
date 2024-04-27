@@ -1,0 +1,9 @@
+@model PostApplication.Models.User
+
+@{
+    ViewData["Title"] = "Профиль пользователя";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h2>username: @Context.User.Identity?.Name</h2>
